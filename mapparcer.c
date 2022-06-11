@@ -201,7 +201,7 @@ void	ft_mapwidlen(char *map_file, t_map **map)
 			((*map)->len)++;
 			free(str);
 		}
-	(*map)->zoom = ft_min(((*map)->win_size)[0] / ((*map)->wid) / 1.1, ((*map)->win_size)[1] / ((*map)->len) / 1.1);
+	(*map)->zoom = (int)ft_min(((*map)->win_size)[0] / ((*map)->wid) / 1.1, ((*map)->win_size)[1] / ((*map)->len) / 1.1) + 1;
 	(*map)->shift[0] = (int)((*map)->win_size[0] / 2);
 	(*map)->shift[1] = (int)((*map)->win_size[1] / 2);
 	close(fd);
@@ -230,7 +230,7 @@ void	ft_set_z_minmax(t_map *map)
 			}
 			y++;
 		}
-		map->z_adopt = 0.03 * (map->win_size)[1] / (map->max_pt - map->min_pt) / map->zoom;
+		map->z_adopt = 0.03 * (map->win_size)[1] / (1 + (map->max_pt - map->min_pt)) / map->zoom;
 	}
 }
 
@@ -286,7 +286,12 @@ void	ft_set_color_table(t_map *map)
 	} */
 	x = -1;
 	while (++x < 3)
-		dc[x] = ((map->color)[1][x] - (map->color)[0][x]) / dz;
+	{
+		if (dz)
+			dc[x] = ((map->color)[1][x] - (map->color)[0][x]) / dz;
+		else
+			dc[x] = 0;
+	}
 //	printf("dc = %f, dz = %f - ", dc[x - 1], dz);
 //	z = map->min_pt;
 	y = -1;

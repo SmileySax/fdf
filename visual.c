@@ -42,6 +42,17 @@ t_point	ft_pmult(t_point p, int n, float z)
 	return (p);
 }
 
+t_point	ft_nullify_point(t_point dp)
+{
+	dp.x = 0;
+	dp.y = 0;
+	dp.z = 0;
+	dp.c[0] = 0;
+	dp.c[1] = 0;
+	dp.c[2] = 0;
+	return (dp);
+}
+
 t_point	ft_pdelta(t_point p1, t_point p2)
 {
 	t_point	dp;
@@ -53,13 +64,21 @@ t_point	ft_pdelta(t_point p1, t_point p2)
 	dp.c[0] = p2.c[0] - p1.c[0];
 	dp.c[1] = p2.c[1] - p1.c[1];
 	dp.c[2] = p2.c[2] - p1.c[2];
-	max = ft_max(fabs(dp.x), fabs(dp.y));
-	dp.x /= max;
-	dp.y /= max;
-	dp.z /= max;
-	dp.c[0] /= max;
-	dp.c[1] /= max;
-	dp.c[2] /= max;
+	max = (int)ft_max(fabs(dp.x), fabs(dp.y));
+	if (max)
+	{
+		dp.x /= max;
+		dp.y /= max;
+		dp.z /= max;
+		dp.c[0] /= max;
+		dp.c[1] /= max;
+		dp.c[2] /= max;
+	}
+	else
+	{
+		write (1, "delta -> 0 err", 14);// <--------------
+		return (ft_nullify_point(dp));
+	}
 	return (dp);
 }
 
@@ -83,8 +102,8 @@ t_point	ft_pshift(t_point p, t_map *map)
 
 t_point	ft_pcentr(t_point p, t_map *map)
 {
-	p.x -= map->wid / 2;
-	p.y -= map->len / 2;
+	p.x -= (int)map->wid / 2;
+	p.y -= (int)map->len / 2;
 	return (p);
 }
 
