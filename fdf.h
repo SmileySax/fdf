@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/02/01 13:21:54 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/04/02 01:56:50 by keaton           ###   ########.fr       */
+/*   Updated: 2022/06/11 18:58:04 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,11 @@ typedef struct s_map
 	t_point	**points;
 	void	*mlx_ptr;
 	void	*win_ptr;
+	char	*img_addr;
+	void	*img;
+	int		bits_per_pixel;
+	int		size_line;
+	int		endian;
 	int		win_size[2];
 	int		zoom;
 	int		color[2][3];
@@ -106,6 +111,7 @@ int		ft_keydealer(int i, t_map *map);
 float	ft_max(float x, float y);
 float	ft_min(float x, float y);
 void	ft_draw(t_map *map);
+void	ft_bzero(void *str, size_t n);
 
 /* void	first_init(t_fdf *data);
 void	read_file(char *file, t_fdf *data);

@@ -1,5 +1,13 @@
 #include "fdf.h"
 
+void	ft_pixel_to_img(t_map *map, int x, int y, int c)
+{
+	char	*pos;
+
+	pos = map->img_addr + y * map->size_line + x * (map->bits_per_pixel / 8);
+	*(unsigned int *)pos = c;
+}
+
 float	ft_abs(float n)
 {
 	if (n < 0)
@@ -149,7 +157,7 @@ void	ft_drawline(t_map *map, t_point p1, t_point p2)
 	{
 		c = (int)p1.c[0] * 256 * 256 + (int)p1.c[1] * 256 + (int)p1.c[2];
 		if (p1.x >= 0 && p1.y >= 0 && p1.x <= (map->win_size)[0] && p1.y <= (map->win_size)[1])
-			mlx_pixel_put(map->mlx_ptr, map->win_ptr, p1.x, p1.y, c);
+			ft_pixel_to_img(map, p1.x, p1.y, c);
 		p1 = ft_pincr(p1, dp);
 	}
 }
@@ -160,6 +168,7 @@ void	ft_draw(t_map *map)
 //	t_point	p2;
 	int	x;
 	int	y;
+	ft_bzero((void *)map->img_addr, map->win_size[0] * map->win_size[1] * (map->bits_per_pixel / 8));
 	y = 0;
 	while (y < map->len)
 	{
@@ -174,5 +183,6 @@ void	ft_draw(t_map *map)
 		}
 		y++;
 	}
+	mlx_put_image_to_window(map->mlx_ptr, map->win_ptr, map->img, 0, 0);
 }
 

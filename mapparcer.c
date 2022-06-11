@@ -129,6 +129,16 @@ void	ft_print(t_map *map)
 	}
 }
 
+void	ft_img_init(t_map *map)
+{
+	(map->win_size)[0] = 1000;
+	(map->win_size)[1] = 1000;
+	map->mlx_ptr = mlx_init();;
+	map->win_ptr = mlx_new_window(map->mlx_ptr, (map->win_size)[0], (map->win_size)[1], "FDF");
+	map->img = mlx_new_image(map->mlx_ptr, (map->win_size)[0], (map->win_size)[1]);
+	map->img_addr = mlx_get_data_addr(map->img, &(map->bits_per_pixel), &(map->size_line), &(map->endian));
+}
+
 t_map *ft_map_init(t_map *map)
 {
 	map = (t_map *)malloc(sizeof(t_map));
@@ -137,10 +147,7 @@ t_map *ft_map_init(t_map *map)
 		map->len = 0;
 		map->wid = 0;
 		map->points = NULL;
-		(map->win_size)[0] = 1000;
-		(map->win_size)[1] = 1000;
-		map->mlx_ptr = mlx_init();;
-		map->win_ptr = mlx_new_window(map->mlx_ptr, (map->win_size)[0], (map->win_size)[1], "FDF");
+		ft_img_init(map);
 		map->zoom = 0;
 		map->angle[0] = -0.9;
 		map->angle[1] = -0.9;

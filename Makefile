@@ -1,4 +1,5 @@
-SRC = 	main.c
+SRC = 	ft_bzero.c	get_next_line.c	get_next_line_utils.c \
+		ft_split.c	lib_part.c		mapparcer.c	visual.c
 #
 OBJ = $(SRC:.c=.o)
 #
