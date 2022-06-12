@@ -8,32 +8,6 @@ void	ft_pixel_to_img(t_map *map, int x, int y, int c)
 	*(unsigned int *)pos = c;
 }
 
-float	ft_abs(float n)
-{
-	if (n < 0)
-		return (-n);
-	else
-		return (n);
-}
-
-float	ft_min(float x, float y)
-{
-
-	if (x < y)
-		return (x);
-	else
-		return (y);
-}
-
-float	ft_max(float x, float y)
-{
-
-	if (x > y)
-		return (x);
-	else
-		return (y);
-}
-
 t_point	ft_pmult(t_point p, int n, float z)
 {
 	p.x = p.x * n;
@@ -64,7 +38,7 @@ t_point	ft_pdelta(t_point p1, t_point p2)
 	dp.c[0] = p2.c[0] - p1.c[0];
 	dp.c[1] = p2.c[1] - p1.c[1];
 	dp.c[2] = p2.c[2] - p1.c[2];
-	max = (int)ft_max(fabs(dp.x), fabs(dp.y));
+	max = (int)fmaxf(fabsf(dp.x), fabsf(dp.y));
 	if (max)
 	{
 		dp.x /= max;
@@ -102,8 +76,8 @@ t_point	ft_pshift(t_point p, t_map *map)
 
 t_point	ft_pcentr(t_point p, t_map *map)
 {
-	p.x -= (int)map->wid / 2;
-	p.y -= (int)map->len / 2;
+	p.x -= map->wid / 2;
+	p.y -= map->len / 2;
 	return (p);
 }
 

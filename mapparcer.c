@@ -201,7 +201,7 @@ void	ft_mapwidlen(char *map_file, t_map **map)
 			((*map)->len)++;
 			free(str);
 		}
-	(*map)->zoom = (int)ft_min(((*map)->win_size)[0] / ((*map)->wid) / 1.1, ((*map)->win_size)[1] / ((*map)->len) / 1.1) + 1;
+	(*map)->zoom = (int)fminf(((*map)->win_size)[0] / ((*map)->wid) / 1.1, ((*map)->win_size)[1] / ((*map)->len) / 1.1) + 1;
 	(*map)->shift[0] = (int)((*map)->win_size[0] / 2);
 	(*map)->shift[1] = (int)((*map)->win_size[1] / 2);
 	close(fd);
@@ -234,32 +234,89 @@ void	ft_set_z_minmax(t_map *map)
 	}
 }
 
-t_map	*ft_fill_ztab(int fd,t_map *map, char *str)
+int	ft_atoi_color(char *str)
+{
+	int			i;
+	long int	res;
+
+	i = 0;
+	res = 0;
+	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
+		|| str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
+		i++;
+	while (i < 6 && ((str[i] >= '0' && str[i] <= '9') ||
+		(str[i] >= 'a' && str[i] <= 'f') ||
+		(str[i] >= 'A' && str[i] <= 'F')))
+	{
+		if (str[i] >= 'a' && str[i] <= 'f')
+			res = res * 16 + (str[i++] - 'a' + 10);
+		else if (str[i] >= 'A' && str[i] <= 'F')
+			res = res * 16 + (str[i++] - 'A' + 10);
+		else
+			res = res * 16 + (str[i++] - '0');
+	}
+	return (res);
+}
+
+void	ft_set_init_color(t_map *map, int x, int y, char *str)
+{
+	int		i;
+	int		color;
+
+	i = 2;
+	color = -1;
+	if (*str && *(str + 1) == '0' && *(str + 2) == 'x')
+	{
+		str += 3;
+		color = ft_atoi_color(str);
+		while (i >= 0)
+		{
+			(map->points)[x][y].c[i--] = color % 0x100;
+			color /= 0x100;
+		}
+	}
+	else
+		while (i >= 0)
+			(map->points)[x][y].c[i--] = -1;
+}
+
+void	ft_height_and_color_filler(t_map *map, int x, int y, char **map_string)
+{
+	char	*str;
+
+	str = map_string[x];
+	(map->points)[x][y].z = ft_atoi(str);
+	(map->points)[x][y].x = x;
+	(map->points)[x][y].y = y;
+	while (*str != ',' || !(*str))
+		str++;
+	ft_set_init_color(map, x, y, str);
+}
+
+t_map	*ft_fill_ztab(int fd,t_map *map)
 {
 	int		y;
 	int		x;
 	char	**map_string;
+	char	*str;
 
+	str = NULL;
 	y = 0;
 	while (get_next_line(fd, &str))
 	{
 		x = 0;
 		map_string = ft_split(str, ' ');
-//		printf("%s", map_string[13]);
 		if (!map_string)
 			ft_error("malloc3");
 		while (map_string[x])
-		{
-//			printf("%s", str[x]);
-			(map->points)[x][y].z = ft_atoi(map_string[x]);
-			(map->points)[x][y].x = x;
-			(map->points)[x][y].y = y;
-			x++;
-		}
+			ft_height_and_color_filler(map, x++, y, map_string);
 		y++;
 		free(str);
+		str = NULL;
 		ft_free_tab(map_string);
 	}
+	if (str)
+		free(str);
 	ft_set_z_minmax(map);
 	return (map);
 }
@@ -302,7 +359,8 @@ void	ft_set_color_table(t_map *map)
 		{
 			i = -1;
 			while (++i < 3)
-				(map->points)[x][y].c[i] = (int)((map->color)[0][i] + ((map->points)[x][y].z - map->min_pt) * dc[i]);
+				if ((map->points)[x][y].c[i] < 0)
+					(map->points)[x][y].c[i] = (int)((map->color)[0][i] + ((map->points)[x][y].z - map->min_pt) * dc[i]);
 //			printf("c = %d, z = %f, dc = %f, %f, %f\n", (map->points)[x][y].c[i - 1], (map->points)[x][y].z - map->min_pt, dc[0], dc[1], dc[2]);
 		}
 	}
@@ -319,15 +377,13 @@ t_map	*ft_parce(char *map_file)
 {
 	int		fd;
 	t_map	*map;
-	char	*str;
 
 	map = NULL;
-	str = NULL;
 	map = ft_map_init(map);
 	ft_mapwidlen(map_file, &map);
 	map = ft_mappoints_init(map);
 	fd = open(map_file, O_RDONLY, 0);
-	map = ft_fill_ztab(fd, map, str);
+	map = ft_fill_ztab(fd, map);
 //	ft_print(map);
 	ft_set_color_table(map);
 //	printf("here\n");
