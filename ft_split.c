@@ -12,45 +12,6 @@
 
 #include "fdf.h"
 
-/* int	ft_strlen(const char *str)
-{
-	int	l;
-
-	l = 0;
-	while (str[l])
-		l++;
-	return (l);
-} */
-
-char	**ft_free_tab(char **tab)
-{
-	int	i;
-
-	i = 0;
-	if (tab)
-	{
-		while (tab[i])
-			free(tab[i++]);
-		free(tab);
-	}
-	return (NULL);
-}
-
-t_map	*ft_free_map(t_map *map)
-{
-	int	x;
-
-	x = 0;
-	if (map->points)
-	{
-		while ((map->points)[x] && x < map->wid)
-			free((map->points)[x++]);
-		free((map->points));
-	}
-	free(map);
-	return (NULL);
-}
-
 static char	*ft_readword(char const *s, int *i, char c)
 {
 	int	len;

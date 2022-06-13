@@ -21,26 +21,6 @@
 # include "mlx/mlx.h"
 # include "get_next_line.h"
 
-# define WIDTH			1920
-# define HEIGHT			1080
-
-# define UP				126
-# define DOWN			125
-# define LEFT			123
-# define RIGHT			124
-# define ESC			53
-# define ZOOM_UP		24
-# define ZOOM_DOWN		27
-# define ANGLE_COS_DOWN	1
-# define ANGLE_COS_UP	0
-# define ANGLE_SIN_DOWN	2
-# define ANGLE_SIN_UP	3
-# define Z_UP			13
-# define Z_DOWN			12
-# define ISO_ON			18
-# define ISO_OFF		19
-# define RESET			48
-
 typedef struct s_point
 {
 	float	x;
@@ -67,37 +47,11 @@ typedef struct s_map
 	int		**colors;
 	int		min_pt;
 	int		max_pt;
-	double	angle[2];
-	double	angle2[2];
+	double	angle[3];
 	int		project;
 	float	z_adopt;
 	int		shift[2];
 }	t_map;
-
-/* typedef struct s_fdf {
-	int		width;
-	int		height;
-	t_dot	**matrix;
-	int		zoom;
-	int		color;
-	double	angle_cos;
-	double	angle_sin;
-	double	z_scale;
-	int		flag;
-	int		shift_x;
-	int		shift_y;
-
-	void	*mlx_ptr;
-	void	*win_ptr;
-	int		scr_x;
-	int		scr_y;
-
-	void	*img;
-	char	*addr;
-	int		bits_per_pixel;
-	int		line_length;
-	int		endian;
-}	t_fdf; */
 
 int		ft_countwords(char const *s, char c);
 t_map	*ft_free_map(t_map *map);
@@ -107,28 +61,26 @@ int		ft_atoi(const char *str);
 char	*ft_substr(char const *s, unsigned int start, int len);
 void	ft_drawline(t_map *map, t_point p1, t_point p2);
 int		ft_keydealer(int i, t_map *map);
-//float	ft_abs(float n);
-float	ft_max(float x, float y);
-float	ft_min(float x, float y);
 void	ft_draw(t_map *map);
 void	ft_bzero(void *str, size_t n);
+t_point	ft_pshift(t_point p, t_map *map);
+t_point	ft_pcentr(t_point p, t_map *map);
+t_point	ft_isometric(t_point p, t_map *map);
+t_point	ft_nullify_point(t_point dp);
+t_point	ft_pdelta(t_point p1, t_point p2);
+t_point	ft_pmult(t_point p, int n, float z);
+void	ft_set_z_minmax(t_map *map);
+void	ft_img_init(t_map *map);
+t_map *ft_map_init(t_map *map);
+t_map *ft_mappoints_init(t_map *map);
+int		ft_atoi_color(char *str);
+void	ft_set_init_color(t_map *map, int x, int y, char *str);
+void	ft_shifter(int key, t_map *map);
+void	ft_project_changer(t_map *map);
+void	ft_facture_n_zoom_variator(int key, t_map *map);
+void	ft_3d(int key, t_map *map);
+void	ft_reset(t_map *map);
+void	ft_error(char *str);
+t_map	*ft_parce(char *map_file);
 
-/* void	first_init(t_fdf *data);
-void	read_file(char *file, t_fdf *data);
-char	**ft_split(char const *s, char c);
-int		ft_atoi(const char *str);
-void	create_line(t_dot start, t_dot end, t_fdf *data);
-void	print_menu(t_fdf *data);
-void	draw(t_fdf *data, t_dot **matrix);
-int		key_hook(int key, t_fdf *data);
-void	ft_free(char **arr);
-void	ft_bzero(void *str, size_t n);
-int		hex_to_dec(char *hex, long long decimal);
-void	set_color(t_dot *matrix, char *z);
-void	my_mlx_pixel_put(t_fdf *data, int x, int y, int color);
-void	init_img(t_fdf *data);
-void	isometric(t_dot *start, t_dot *end, t_fdf *data);
-void	get_zoom(t_dot *a, t_dot *b, t_fdf *data);
-void	get_shift(t_dot *start, t_dot *end, t_fdf *data);
-int		error(char *error); */
 #endif

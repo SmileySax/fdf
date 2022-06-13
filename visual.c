@@ -1,59 +1,29 @@
 #include "fdf.h"
 
+void	ft_menu(t_map *map)
+{
+	int		indent;
+	void	*m;
+	void	*w;
+
+	indent = 1;
+	m = map->mlx_ptr;
+	w = map->win_ptr;
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Zoom: [ / ]");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Facture: Z / X");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "3d rotation: Q/W/E/A/S/D");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Move: Arrows");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Top View ON/OFF: Space");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Reset: TAB");
+	mlx_string_put(m, w, 10, 20 * indent++, 0x94E411, "Exit: ESC");
+}
+
 void	ft_pixel_to_img(t_map *map, int x, int y, int c)
 {
 	char	*pos;
 
 	pos = map->img_addr + y * map->size_line + x * (map->bits_per_pixel / 8);
 	*(unsigned int *)pos = c;
-}
-
-t_point	ft_pmult(t_point p, int n, float z)
-{
-	p.x = p.x * n;
-	p.y = p.y * n;
-	p.z = p.z * n * z;
-	return (p);
-}
-
-t_point	ft_nullify_point(t_point dp)
-{
-	dp.x = 0;
-	dp.y = 0;
-	dp.z = 0;
-	dp.c[0] = 0;
-	dp.c[1] = 0;
-	dp.c[2] = 0;
-	return (dp);
-}
-
-t_point	ft_pdelta(t_point p1, t_point p2)
-{
-	t_point	dp;
-	int		max;
-
-	dp.x = p2.x - p1.x;
-	dp.y = p2.y - p1.y;
-	dp.z = p2.z - p1.z;
-	dp.c[0] = p2.c[0] - p1.c[0];
-	dp.c[1] = p2.c[1] - p1.c[1];
-	dp.c[2] = p2.c[2] - p1.c[2];
-	max = (int)fmaxf(fabsf(dp.x), fabsf(dp.y));
-	if (max)
-	{
-		dp.x /= max;
-		dp.y /= max;
-		dp.z /= max;
-		dp.c[0] /= max;
-		dp.c[1] /= max;
-		dp.c[2] /= max;
-	}
-	else
-	{
-		write (1, "delta -> 0 err", 14);// <--------------
-		return (ft_nullify_point(dp));
-	}
-	return (dp);
 }
 
 t_point ft_pincr(t_point p, t_point dp)
@@ -65,71 +35,6 @@ t_point ft_pincr(t_point p, t_point dp)
 	p.c[1] = p.c[1] + dp.c[1];
 	p.c[2] = p.c[2] + dp.c[2];
 	return (p);
-}
-
-t_point	ft_pshift(t_point p, t_map *map)
-{
-	p.x += map->shift[0];
-	p.y += map->shift[1];
-	return (p);
-}
-
-t_point	ft_pcentr(t_point p, t_map *map)
-{
-	p.x -= map->wid / 2;
-	p.y -= map->len / 2;
-	return (p);
-}
-
-/* t_point	ft_isometric(t_point p, t_map *map)
-{
-	if (map->project == 0)
-	{
-		p.x = (p.x - cos(map->angle2[0]) * p.y) * cos((map->angle)[0]);
-		p.y = (cos(map->angle2[0]) * p.x + p.y) * sin((map->angle)[1]) - p.z;
-	}
-	else
-	{
-		p.x = p.x;
-		p.y = p.y;
-	}
-	return (p);
-} */
-
-t_point	ft_isometric(t_point p, t_map *map)
-{
-	t_point res;
-
-	res = p;
-	if (map->project == 0)
-	{
-		p = res;
-		res.x = cos(map->angle2[0]) * p.x - sin(map->angle2[0]) * p.y;
-		res.y = sin(map->angle2[0]) * p.x + cos(map->angle2[0]) * p.y;
-		p = res;
-		res.y = cos(map->angle[0]) * p.y - sin(map->angle[0]) * p.z;
-		res.z = sin(map->angle[0]) * p.y + cos(map->angle[0]) * p.z;
-		p = res;
-		res.x = cos(map->angle[1]) * p.x + sin(map->angle[1]) * p.z;
-		res.z = - sin(map->angle[1]) * p.x + cos(map->angle[1]) * p.z;
-//		p.x = 1*res.x - sin(map->angle[0]) * res.y + cos(map->angle[0]) * res.z;
-//		p.y = 0*res.x + cos(map->angle[0]) * res.y + sin(map->angle[0]) * res.z;
-//		p.y = 1*p.y - sin(map->angle[1]) * p.x - cos(map->angle[1]) * p.z;
-//		p.x = 0*p.y + cos(map->angle[1]) * p.x - sin(map->angle[1]) * p.z;
-//		res = p;
-		// res.x += p.x * (cos(map->angle2[0]) + cos(map->angle[1]));
-		// res.x -= p.y * (sin(map->angle2[0]) + sin(map->angle[0]));
-		// res.x += p.z * (cos(map->angle[0]) - sin(map->angle[1]));
-		// res.y += p.x * (sin(map->angle2[0]) - sin(map->angle[1]));
-		// res.y += p.y * (cos(map->angle2[0]) + cos(map->angle[0]));
-		// res.y += p.z * (sin(map->angle[0]) - cos(map->angle[1]));
-	}
-	else
-	{
-		res.x = p.x;
-		res.y = p.y;
-	}
-	return (res);
 }
 
 void	ft_drawline(t_map *map, t_point p1, t_point p2)
@@ -157,10 +62,9 @@ void	ft_drawline(t_map *map, t_point p1, t_point p2)
 
 void	ft_draw(t_map *map)
 {
-//	t_point	p1;
-//	t_point	p2;
 	int	x;
 	int	y;
+
 	ft_bzero((void *)map->img_addr, map->win_size[0] * map->win_size[1] * (map->bits_per_pixel / 8));
 	y = 0;
 	while (y < map->len)
@@ -177,5 +81,6 @@ void	ft_draw(t_map *map)
 		y++;
 	}
 	mlx_put_image_to_window(map->mlx_ptr, map->win_ptr, map->img, 0, 0);
+	ft_menu(map);
 }
 
