@@ -5,8 +5,8 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2022/02/01 13:21:54 by nenvoy            #+#    #+#             */
-/*   Updated: 2022/06/11 18:58:04 by keaton           ###   ########.fr       */
+/*   Created: 2022/06/16 00:56:07 by keaton            #+#    #+#             */
+/*   Updated: 2022/06/16 01:52:51 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,8 +71,8 @@ t_point	ft_pdelta(t_point p1, t_point p2);
 t_point	ft_pmult(t_point p, int n, float z);
 void	ft_set_z_minmax(t_map *map);
 void	ft_img_init(t_map *map);
-t_map *ft_map_init(t_map *map);
-t_map *ft_mappoints_init(t_map *map);
+t_map	*ft_map_init(t_map *map);
+t_map	*ft_mappoints_init(t_map *map);
 int		ft_atoi_color(char *str);
 void	ft_set_init_color(t_map *map, int x, int y, char *str);
 void	ft_shifter(int key, t_map *map);
@@ -82,5 +82,8 @@ void	ft_3d(int key, t_map *map);
 void	ft_reset(t_map *map);
 void	ft_error(char *str);
 t_map	*ft_parce(char *map_file);
+void	ft_mapwidlen(char *map_file, t_map **map);
+t_map	*ft_fill_ztab(int fd, t_map *map);
+void	ft_set_color_table(t_map *map);
 
 #endif

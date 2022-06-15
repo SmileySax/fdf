@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   draw_utils.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/16 00:54:13 by keaton            #+#    #+#             */
+/*   Updated: 2022/06/16 01:01:29 by keaton           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 t_point	ft_pshift(t_point p, t_map *map)
@@ -16,7 +28,7 @@ t_point	ft_pcentr(t_point p, t_map *map)
 
 t_point	ft_isometric(t_point p, t_map *map)
 {
-	t_point res;
+	t_point	res;
 
 	res = p;
 	if (map->project == 2)
@@ -28,7 +40,7 @@ t_point	ft_isometric(t_point p, t_map *map)
 		res.z = sin(map->angle[0]) * p.y + cos(map->angle[0]) * p.z;
 		p = res;
 		res.x = cos(map->angle[1]) * p.x + sin(map->angle[1]) * p.z;
-		res.z = - sin(map->angle[1]) * p.x + cos(map->angle[1]) * p.z;
+		res.z = -sin(map->angle[1]) * p.x + cos(map->angle[1]) * p.z;
 	}
 	else if (map->project == 1)
 	{

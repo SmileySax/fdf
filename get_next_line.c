@@ -6,13 +6,13 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/01/07 20:22:41 by keaton            #+#    #+#             */
-/*   Updated: 2022/03/28 02:51:50 by keaton           ###   ########.fr       */
+/*   Updated: 2022/06/16 01:02:20 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "fdf.h"
 
-# define BUFFER_SIZE	100
+#define BUFFER_SIZE	100
 
 char	*ft_freelinefunc(char *where, char *what, char i)
 {

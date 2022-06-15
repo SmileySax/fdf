@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   key_utils.c                                        :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/16 00:57:34 by keaton            #+#    #+#             */
+/*   Updated: 2022/06/16 01:07:40 by keaton           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	ft_shifter(int key, t_map *map)
@@ -68,8 +80,10 @@ void	ft_reset(t_map *map)
 	map->angle[0] = 0.7;
 	map->angle[1] = -0.45;
 	map->angle[2] = 0.6;
-	map->zoom = (int)fminf((map->win_size)[0] / (map->wid) / 1.1, (map->win_size)[1] / (map->len) / 1.1) + 1;
+	map->zoom = (int)fminf((map->win_size)[0] / (map->wid)
+			/ 1.1, (map->win_size)[1] / (map->len) / 1.1) + 1;
 	map->shift[0] = (int)(map->win_size[0] / 2);
 	map->shift[1] = (int)(map->win_size[1] / 2);
-	map->z_adopt = 0.03 * (map->win_size)[1] / (1 + (map->max_pt - map->min_pt)) / map->zoom;
+	map->z_adopt = 0.03 * (map->win_size)[1] / (1
+			+ (map->max_pt - map->min_pt)) / map->zoom;
 }

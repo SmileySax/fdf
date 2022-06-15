@@ -1,3 +1,15 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   utils.c                                            :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/16 00:58:49 by keaton            #+#    #+#             */
+/*   Updated: 2022/06/16 01:50:31 by keaton           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	ft_set_z_minmax(t_map *map)
@@ -23,7 +35,8 @@ void	ft_set_z_minmax(t_map *map)
 			}
 			y++;
 		}
-		map->z_adopt = 0.03 * (map->win_size)[1] / (1 + (map->max_pt - map->min_pt)) / map->zoom;
+		map->z_adopt = 0.03 * (map->win_size)[1] / (1
+				+ (map->max_pt - map->min_pt)) / map->zoom;
 	}
 }
 

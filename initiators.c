@@ -1,16 +1,31 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   initiators.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2022/06/16 00:57:24 by keaton            #+#    #+#             */
+/*   Updated: 2022/06/16 01:06:09 by keaton           ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "fdf.h"
 
 void	ft_img_init(t_map *map)
 {
 	(map->win_size)[0] = 1000;
 	(map->win_size)[1] = 1000;
-	map->mlx_ptr = mlx_init();;
-	map->win_ptr = mlx_new_window(map->mlx_ptr, (map->win_size)[0], (map->win_size)[1], "FDF");
-	map->img = mlx_new_image(map->mlx_ptr, (map->win_size)[0], (map->win_size)[1]);
-	map->img_addr = mlx_get_data_addr(map->img, &(map->bits_per_pixel), &(map->size_line), &(map->endian));
+	map->mlx_ptr = mlx_init();
+	map->win_ptr = mlx_new_window(map->mlx_ptr, (map->win_size)[0],
+			(map->win_size)[1], "FDF");
+	map->img = mlx_new_image(map->mlx_ptr, (map->win_size)[0],
+			(map->win_size)[1]);
+	map->img_addr = mlx_get_data_addr(map->img, &(map->bits_per_pixel),
+			&(map->size_line), &(map->endian));
 }
 
-t_map *ft_map_init(t_map *map)
+t_map	*ft_map_init(t_map *map)
 {
 	map = (t_map *)malloc(sizeof(t_map));
 	if (map)
@@ -36,7 +51,7 @@ t_map *ft_map_init(t_map *map)
 	return (map);
 }
 
-t_map *ft_mappoints_init(t_map *map)
+t_map	*ft_mappoints_init(t_map *map)
 {
 	int	x;
 
@@ -44,7 +59,7 @@ t_map *ft_mappoints_init(t_map *map)
 	if (map->points)
 	{
 		x = 0;
-		while(x < map->wid)
+		while (x < map->wid)
 		{
 			(map->points)[x] = (t_point *)malloc(sizeof(t_point) * map->len);
 			if (!(map->points)[x++])
@@ -66,9 +81,9 @@ int	ft_atoi_color(char *str)
 	while (str[i] == ' ' || str[i] == '\t' || str[i] == '\n'
 		|| str[i] == '\v' || str[i] == '\r' || str[i] == '\f')
 		i++;
-	while (i < 6 && ((str[i] >= '0' && str[i] <= '9') ||
-		(str[i] >= 'a' && str[i] <= 'f') ||
-		(str[i] >= 'A' && str[i] <= 'F')))
+	while (i < 6 && ((str[i] >= '0' && str[i] <= '9')
+			|| (str[i] >= 'a' && str[i] <= 'f')
+			|| (str[i] >= 'A' && str[i] <= 'F')))
 	{
 		if (str[i] >= 'a' && str[i] <= 'f')
 			res = res * 16 + (str[i++] - 'a' + 10);
