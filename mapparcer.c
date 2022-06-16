@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 00:56:21 by keaton            #+#    #+#             */
-/*   Updated: 2022/06/16 01:50:02 by keaton           ###   ########.fr       */
+/*   Updated: 2022/06/17 00:30:37 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,6 +17,10 @@ void	ft_mapwidlen(char *map_file, t_map **map)
 	char	*str;
 	int		fd;
 
+	fd = open(map_file, O_RDWR);
+	if (fd == -1)
+		ft_error("Failed to open file");
+	close(fd);
 	fd = open(map_file, O_RDONLY, 0);
 	(*map)->len = 0;
 	while (get_next_line(fd, &str))

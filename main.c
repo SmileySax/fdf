@@ -6,7 +6,7 @@
 /*   By: keaton <keaton@student.21-school.ru>       +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/06/16 00:56:29 by keaton            #+#    #+#             */
-/*   Updated: 2022/06/16 01:32:56 by keaton           ###   ########.fr       */
+/*   Updated: 2022/06/17 00:06:37 by keaton           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,12 +63,16 @@ int	main(int argc, char **argv)
 {
 	t_map	*map;
 
-	argc++;
-	map = ft_parce(argv[1]);
-	ft_draw(map);
-	mlx_key_hook(map->win_ptr, ft_keydealer, map);
-	mlx_hook(map->win_ptr, 17, 0, ft_exit_x_button, map);
-	mlx_loop(map->mlx_ptr);
-	ft_free_map(map);
+	if (argc == 2)
+	{
+		map = ft_parce(argv[1]);
+		ft_draw(map);
+		mlx_key_hook(map->win_ptr, ft_keydealer, map);
+		mlx_hook(map->win_ptr, 17, 0, ft_exit_x_button, map);
+		mlx_loop(map->mlx_ptr);
+		ft_free_map(map);
+	}
+	else
+		ft_error("Number of arguments error");
 	return (0);
 }
